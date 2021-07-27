@@ -5,3 +5,17 @@ Trying to figure out which files contains which reads and which files contain wh
 1294_S1_L008_R3_001.fastq.gz --> contains index 2
 1294_S1_L008_R4_001.fastq.gz --> contains read 2
 
+#####################################################################################################################
+
+Made some test files called:
+R1.fastq
+R2.fastq
+R3.fastq
+R4.fastq
+
+They are just the first three records of the actual files that we will be reading (updating)
+1st indexes -- perfect match
+2nd indexes -- swapped
+3rd indexes -- bad quality
+
+MAKE SURE YOU USE THE REVERSE COMPLIMENT FOR ONE OF THE INDEXES!!!!
