@@ -3,6 +3,7 @@ import numpy as np
 
 convert=bioinfo.convert_phred
 
+################################################# functions ####################################################
 
 def get_args(): #defines all the independent variables
 	import argparse
@@ -25,11 +26,12 @@ def populate_array(file,array):
     
 	while True:
         
-		line=f.readline()
+		line=(f.readline()).strip()
 
 		if n%4==3: #if the file line is 3,7,11... i.e. the quality score line
-    
-			for position in range(len(array[0])): #for each charcter in the quality score line
+		
+			for position in range(args.read_length): #for each charcter in the quality score line
+		
 				array[position,current_record] = convert(line[position])
             
 			current_record += 1
@@ -64,7 +66,7 @@ def distribution(mean, stdev, print_to_terminal = False):
 	plt.ylabel('mean value of base number', size=20)
 	plt.title('Base Mean Quality Scores', size = 22)
 	plt.bar(x_data,y_data, color='mediumspringgreen')
-	plt.errorbar(x_data, y_data, yerr=stdev, fmt='.', color='teal', linewidth=2)
+	plt.errorbar(x_data, y_data, yerr=stdev, fmt='.', elinewidth=1,color='teal', linewidth=2)
 	plt.savefig('distribution_plots/{}.png'.format(args.plot_title))
 	if print_to_terminal == True:
 		plt.show()
