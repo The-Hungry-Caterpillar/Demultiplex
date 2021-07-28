@@ -23,3 +23,7 @@ Note: THE INDEXES ARE REVERSE COMPLIMENTS
 ######################################################################################################################
 
 Moving on to plotting the distributions
+
+Successfully plotted the test files, moving on to actual files
+
+Need to make a SLURM script for all four jobs

@@ -1,3 +1,5 @@
+
+
 import bioinfo
 import numpy as np
 
@@ -13,6 +15,7 @@ def get_args(): #defines all the independent variables
 	parser.add_argument('-l', '--read_length', type=int, help='input read length')
 	parser.add_argument('-nr', '--number_records', type=int, help="input number of records, use this command to count: ~$ records=$(grep -c '^@K00337' <filename>)'")
 	parser.add_argument('-t', '--plot_title', help = 'input desired distribution plot title')
+	parser.add_argument('-d', '--directory', help= 'input directory to save plots')
 	return parser.parse_args()
 
 args=get_args()
@@ -67,7 +70,7 @@ def distribution(mean, stdev, print_to_terminal = False):
 	plt.title('Base Mean Quality Scores', size = 22)
 	plt.bar(x_data,y_data, color='mediumspringgreen')
 	plt.errorbar(x_data, y_data, yerr=stdev, fmt='.', elinewidth=1,color='teal', linewidth=2)
-	plt.savefig('distribution_plots/{}.png'.format(args.plot_title))
+	plt.savefig('{}/{}.png'.format(args.directory, args.plot_title))
 	if print_to_terminal == True:
 		plt.show()
 
