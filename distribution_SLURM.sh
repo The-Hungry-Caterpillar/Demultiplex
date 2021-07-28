@@ -15,7 +15,7 @@ read1=$shared_dir/1294_S1_L008_R1_001.fastq.gz
 records=$(grep -c '^@K00337' $read1)
 
 /usr/bin/time -v \
-python mean_quality_distribution.py \
+python $plot_dir/mean_quality_distribution.py \
 -f $read1 \
 -l 101 \
 -nr $records \
@@ -27,7 +27,7 @@ index1=$shared_dir/1294_S1_L008_R2_001.fastq.gz
 records=$(grep -c '^@K00337' $index1)
 
 /usr/bin/time -v \
-python mean_quality_distribution.py \
+python $plot_dir/mean_quality_distribution.py \
 -f $index1 \
 -l 8 \
 -nr $records \
@@ -39,7 +39,7 @@ index2=$shared_dir/1294_S1_L008_R3_001.fastq.gz
 records=$(grep -c '^@K00337' $index2)
 
 /usr/bin/time -v \
-python mean_quality_distribution.py \
+python $plot_dir/mean_quality_distribution.py \
 -f $index2 \
 -l 8 \
 -nr $records \
@@ -51,7 +51,7 @@ read2=$shared_dir/1294_S1_L008_R4_001.fastq.gz
 records=$(grep -c '^@K00337' $read2)
 
 /usr/bin/time -v \
-python mean_quality_distribution.py \
+python $plot_dir/mean_quality_distribution.py \
 -f $read2 \
 -l 101 \
 -nr $records \
