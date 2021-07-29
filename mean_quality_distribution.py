@@ -24,8 +24,8 @@ def populate_array(file):
 	
 	for n in range(args.read_length):
 		f=gzip.open(file,'rt')
-		
-		holding_list=[]
+		#f=open(file,'r')
+		total=0
 
 		i=0
 		while True:
@@ -34,7 +34,7 @@ def populate_array(file):
 
 			if i%4==3: #if the file line is 3,7,11... i.e. the quality score line
 			
-				holding_list.append(convert(line[n]))
+				total+=convert(line[n])
 					
 			if line=='': #if there are no more lines to read, break
 				break
@@ -43,11 +43,11 @@ def populate_array(file):
 			
 		f.close()
 
-		mean.append(np.mean(holding_list))
-		stdev.append(np.std(holding_list, ddof=1))
+		mean = total/args.number_records
+		means.append(mean)
 
 
-def distribution(mean, stdev, print_to_terminal = False):
+def distribution(mean, print_to_terminal = False):
 	import matplotlib.pyplot as plt
 
 	y_data=mean
@@ -56,7 +56,6 @@ def distribution(mean, stdev, print_to_terminal = False):
 	plt.ylabel('mean value of base number', size=20)
 	plt.title('Base Mean Quality Scores', size = 22)
 	plt.bar(x_data,y_data, color='mediumspringgreen')
-	plt.errorbar(x_data, y_data, yerr=stdev, fmt='.', elinewidth=1,color='teal', linewidth=2)
 	plt.savefig('{}/{}.png'.format(args.directory, args.plot_title))
 	if print_to_terminal == True:
 		plt.show()
@@ -66,8 +65,7 @@ def distribution(mean, stdev, print_to_terminal = False):
 
 file=args.input_file
 
-mean=[]
-stdev=[]
+means=[]
 populate_array(file)
 
-distribution(mean,stdev)
+distribution(means)
