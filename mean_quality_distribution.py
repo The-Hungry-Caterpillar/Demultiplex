@@ -1,5 +1,3 @@
-
-
 import bioinfo
 import numpy as np
 import gzip
@@ -22,43 +20,31 @@ def get_args(): #defines all the independent variables
 args=get_args()
 
 
-def populate_array(file,array):   
-	f=gzip.open(file,'rt')
-    
-	current_record = 0 
-	n = 0
-    
-	while True:
-        
-		line=(f.readline()).strip()
-
-		if n%4==3: #if the file line is 3,7,11... i.e. the quality score line
-		
-			for position in range(args.read_length): #for each charcter in the quality score line
-		
-				array[position,current_record] = convert(line[position])
-            
-			current_record += 1
-                
-		if line=='': #if there are no more lines to read, break
-			break
-        
-		n += 1
-
-	f.close()
+def populate_array(file):   
 	
-	return(array)
+	for n in range(args.read_length):
+		f=gzip.open(file,'rt')
+		
+		holding_list=[]
 
+		i=0
+		while True:
+			
+			line=(f.readline()).strip()
 
-def make_data(array):
-	mean = np.zeros(101)
-	stdev = np.zeros(101)
+			if i%4==3: #if the file line is 3,7,11... i.e. the quality score line
+			
+				holding_list.append(convert(line[n]))
+					
+			if line=='': #if there are no more lines to read, break
+				break
+			
+			i+=1
+			
+		f.close()
 
-	for position in range(len(array)):
-		mean[position] = np.mean((array[position]))
-		stdev[position] = np.std(array[position], ddof=1)
-	
-	return(mean,stdev)
+		mean.append(np.mean(holding_list))
+		stdev.append(np.std(holding_list, ddof=1))
 
 
 def distribution(mean, stdev, print_to_terminal = False):
@@ -80,11 +66,8 @@ def distribution(mean, stdev, print_to_terminal = False):
 
 file=args.input_file
 
-array=np.zeros((args.read_length, args.number_records))
-
-array=populate_array(file,array)
-
-mean = make_data(array)[0]
-stdev = make_data(array)[1]
+mean=[]
+stdev=[]
+populate_array(file)
 
 distribution(mean,stdev)
