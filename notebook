@@ -27,3 +27,12 @@ Moving on to plotting the distributions
 Successfully plotted the test files, moving on to actual files
 
 Need to make a SLURM script for all four jobs
+
+SLURM script complete. 
+
+submitted SLURM:
+	~$ sbatch distribution_SLURM.sh
+
+	-$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15566945      bgmp distribu   jogata  R       1:18      1 n226
