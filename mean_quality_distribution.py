@@ -20,27 +20,25 @@ def get_args(): #defines all the independent variables
 args=get_args()
 
 
-def populate_array(file):   
+def find_mean(file):   
 	
 	for n in range(args.read_length):
-		f=gzip.open(file,'rt')
+		f=gzip.open(file,'rt') #this needs to be in the loop so that the readline() argument starts over
 		#f=open(file,'r')
 		total=0
 
 		i=0
+		
 		while True:
-			
 			line=(f.readline()).strip()
 
 			if i%4==3: #if the file line is 3,7,11... i.e. the quality score line
-			
 				total+=convert(line[n])
 					
 			if line=='': #if there are no more lines to read, break
 				break
 			
 			i+=1
-			
 		f.close()
 
 		mean = total/args.number_records
@@ -66,6 +64,6 @@ def distribution(mean, print_to_terminal = False):
 file=args.input_file
 
 means=[]
-populate_array(file)
+find_mean(file)
 
 distribution(means)
