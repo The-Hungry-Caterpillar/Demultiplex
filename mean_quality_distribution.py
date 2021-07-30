@@ -22,28 +22,24 @@ args=get_args()
 
 def find_mean(file):   
 	
-	for n in range(args.read_length):
-		f=gzip.open(file,'rt') #this needs to be in the loop so that the readline() argument starts over
-		#f=open(file,'r')
-		total=0
-
-		i=0
+	array=np.zeros(101)
+	f=gzip.open(file)
+	#f=open(file)
+	i=0
 		
-		while True:
-			line=(f.readline()).strip()
+	while True:
+		line=(f.readline()).strip()
 
-			if i%4==3: #if the file line is 3,7,11... i.e. the quality score line
-				total+=convert(line[n])
-					
-			if line=='': #if there are no more lines to read, break
-				break
-			
-			i+=1
-		f.close()
-
-		mean = total/args.number_records
-		means.append(mean)
-
+		if i%4==3: #if the file line is 3,7,11... i.e. the quality score line
+			for n in range(args.read_length):
+				array[n]+=convert(line[n])
+				
+		if line=='': #if there are no more lines to read, break
+			break
+		
+		i+=1
+	mean=array/args.number_records
+	return(mean)
 
 def distribution(mean, print_to_terminal = False):
 	import matplotlib.pyplot as plt
@@ -63,7 +59,12 @@ def distribution(mean, print_to_terminal = False):
 
 file=args.input_file
 
-means=[]
-find_mean(file)
+means=find_mean(file)
+
 
 distribution(means)
+
+
+
+#for testfile:
+#python mean_quality_distribution_better.py -f test_files/long_R1.fastq -l 101 -nr 250 -t test_plot -d distribution_plots
