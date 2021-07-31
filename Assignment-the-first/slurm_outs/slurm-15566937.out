@@ -1,0 +1,128 @@
+Traceback (most recent call last):
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 84, in <module>
+    array=populate_array(file,array)
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 32, in populate_array
+    line=(f.readline()).strip()
+  File "/projects/bgmp/jogata/miniconda3/envs/bgmp_py39/lib/python3.9/codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
+Command exited with non-zero status 1
+	Command being timed: "python mean_quality_distribution.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -l 101 -nr 0 -t read1_mean_Qscores -d /projects/bgmp/jogata/bioinformatics/bi622/Demux/distribution_plots"
+	User time (seconds): 0.45
+	System time (seconds): 0.63
+	Percent of CPU this job got: 49%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.22
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 24616
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6586
+	Voluntary context switches: 1117
+	Involuntary context switches: 1
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+Traceback (most recent call last):
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 84, in <module>
+    array=populate_array(file,array)
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 32, in populate_array
+    line=(f.readline()).strip()
+  File "/projects/bgmp/jogata/miniconda3/envs/bgmp_py39/lib/python3.9/codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
+Command exited with non-zero status 1
+	Command being timed: "python mean_quality_distribution.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -l 8 -nr 0 -t index1_mean_Qscores -d /projects/bgmp/jogata/bioinformatics/bi622/Demux/distribution_plots"
+	User time (seconds): 0.35
+	System time (seconds): 0.54
+	Percent of CPU this job got: 605%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 24592
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6586
+	Voluntary context switches: 563
+	Involuntary context switches: 3
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+Traceback (most recent call last):
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 84, in <module>
+    array=populate_array(file,array)
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 32, in populate_array
+    line=(f.readline()).strip()
+  File "/projects/bgmp/jogata/miniconda3/envs/bgmp_py39/lib/python3.9/codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
+Command exited with non-zero status 1
+	Command being timed: "python mean_quality_distribution.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -l 8 -nr 0 -t index2_mean_Qscores -d /projects/bgmp/jogata/bioinformatics/bi622/Demux/distribution_plots"
+	User time (seconds): 0.36
+	System time (seconds): 0.50
+	Percent of CPU this job got: 613%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 24592
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6589
+	Voluntary context switches: 556
+	Involuntary context switches: 8
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
+Traceback (most recent call last):
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 84, in <module>
+    array=populate_array(file,array)
+  File "/gpfs/projects/bgmp/jogata/bioinformatics/bi622/Demux/mean_quality_distribution.py", line 32, in populate_array
+    line=(f.readline()).strip()
+  File "/projects/bgmp/jogata/miniconda3/envs/bgmp_py39/lib/python3.9/codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x8b in position 1: invalid start byte
+Command exited with non-zero status 1
+	Command being timed: "python mean_quality_distribution.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -l 101 -nr 0 -t read2_mean_Qscores -d /projects/bgmp/jogata/bioinformatics/bi622/Demux/distribution_plots"
+	User time (seconds): 0.42
+	System time (seconds): 0.60
+	Percent of CPU this job got: 451%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.22
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 26632
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6579
+	Voluntary context switches: 573
+	Involuntary context switches: 3
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
