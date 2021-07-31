@@ -100,6 +100,7 @@ while True:
 
 
 	if index1 or index2 have an 'N' (or if one of the indexes have a quality score below a certain threshold, I haven't decided yet...):
+		#This loop needs to go before the first if loop -- quality check needs to be done first.
 
 		then do the same thing as the if loop above, but put the records in the bad_quality files
 
