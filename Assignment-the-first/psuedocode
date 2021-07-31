@@ -1,4 +1,5 @@
 import bioinfo
+import gzip
 
 
 def reverse_compliment(nucleotide_string)
@@ -23,9 +24,9 @@ Check to see if the created files match the indexes in file_with_list_of_indexes
 
 
 Then open all files with their code, e.g. :
-B1_R1 = open('GTAGCGTA_read1', 'a') #this would be the read 1 (R1) file for the index 'GTAGCGTA'
-B1_R2 = open('GTAGCGTA_read2', 'a') #this would be the read 2 (R2) file for the index 'GTAGCGTA'
-A5_R1 = open('CGATCGAT_read1', 'a') #this would be the read 1 (R1) file for the index 'CGATCGAT'
+B1_R1 = gzip.open('GTAGCGTA_read1', 'rt') #this would be the read 1 (R1) file for the index 'GTAGCGTA'
+B1_R2 = gzip.open('GTAGCGTA_read2', 'rt') #this would be the read 2 (R2) file for the index 'GTAGCGTA'
+A5_R1 = gzip.open('CGATCGAT_read1', 'rt') #this would be the read 1 (R1) file for the index 'CGATCGAT'
 and so on...
 
 
@@ -51,7 +52,7 @@ while True:
 	n=0
 
 	#read the first line of a record in each file, make one of them a temp header
-	header = r1.readline() 
+	header = r1.readline() #also strip off the stuff at the end that's not common amongst all four headers
 	i1.readline()
 	i2.readline()
 	r2.readline()
