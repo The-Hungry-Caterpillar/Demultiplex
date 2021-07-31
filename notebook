@@ -82,3 +82,5 @@ submitted R1,I1,I2,R2, in that order: (distribution_SLURM, distribution_SLURM1, 
           15636051      bgmp distribu   jogata  R       0:08      1 n226
           15636050      bgmp distribu   jogata  R       0:11      1 n225
           15636049      bgmp distribu   jogata  R       0:17      1 n225
+
+Okay jobs are complete.
