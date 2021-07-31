@@ -36,3 +36,49 @@ submitted SLURM:
 	-$ squeue -u jogata
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
           15566945      bgmp distribu   jogata  R       1:18      1 n226
+
+It didn't like the size of my array, trying a different method, resubmitted script
+ -$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15582549      bgmp distribu   jogata  R       1:27      1 n226
+
+Okay that didn't work, I think it's because I was making a list that was the legnth of number of reads.
+Redid script to have a running sum. 
+
+Resubmitted job
+ -$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15631994      bgmp distribu   jogata  R       3:29      1 n227
+
+This is taking forever, I resubmitted job with 8 cpus/task and 4 NODES
+ -$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15632365      bgmp distribu   jogata  R       0:10      4 n[226-229]
+
+Okay don't ask for 4 nodes. Figured out my problem for real this time... I was trying to read through the file 101 times,
+	so my code was taking 101 times longer than it should have. Fixed this problem.
+
+Read 1 job:
+ -$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15633621      bgmp distribu   jogata  R       0:11      1 n225
+
+Index 1 job:
+ -$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15633624      bgmp distribu   jogata  R       1:03      1 n226
+
+Index 2 job:
+ -$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15633628      bgmp distribu   jogata  R       0:29      1 n227
+
+Oops, forgot to change to f=gzip.open(), resubmitting....
+
+submitted R1,I1,I2,R2, in that order: (distribution_SLURM, distribution_SLURM1, etc.)
+ -$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15636052      bgmp distribu   jogata  R       0:04      1 n226
+          15636051      bgmp distribu   jogata  R       0:08      1 n226
+          15636050      bgmp distribu   jogata  R       0:11      1 n225
+          15636049      bgmp distribu   jogata  R       0:17      1 n225
