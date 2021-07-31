@@ -37,11 +37,13 @@ Please fill in your answers on [Answers.md](Answers.md)
         - A good quality score cutoff, based on the histograms, is 35 for the index reads and 30 for the biological reads. 
     3.	How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
         Index 1:
+        
         ``` gunzip -c 1294_S1_L008_R2_001.fastq.gz | grep -A1 --no-group-separator '^@K00337' | grep -v '^@K00337' | grep -c 'N' ```
 
         Out: 3976613
         
         Index 2:
+        
         ``` gunzip -c 1294_S1_L008_R3_001.fastq.gz | grep -A1 --no-group-separator '^@K00337' | grep -v '^@K00337' | grep -c 'N'```
         
         Out:3328051
