@@ -1,0 +1,117 @@
+import bioinfo
+
+
+def reverse_compliment(nucleotide_string)
+	'''This function takes a nucleotide string and returns the reverse compliment
+	if bioinfo.validate_base_seq(nucleotide_string) == True:
+		return(reverse compliment of nucleotide_string)
+
+To test above function, give it a DNA/RNA string and see if it returns reverse compliment
+
+
+def make_buckets(file_with_list_of_indexes):
+	'''This function builds index output files based on a master list of indexes''' 
+	for index in file_with_list_of_indexes:
+		make index_output_file_read1
+		make index_output_file_read2
+	make index_hopping_file_read1
+	make index_hopping_file_read2
+	make bad_quality_read1
+	make bad_quality_read2
+
+Check to see if the created files match the indexes in file_with_list_of_indexes
+
+
+Then open all files with their code, e.g. :
+B1_R1 = open('GTAGCGTA_read1', 'a') #this would be the read 1 (R1) file for the index 'GTAGCGTA'
+B1_R2 = open('GTAGCGTA_read2', 'a') #this would be the read 2 (R2) file for the index 'GTAGCGTA'
+A5_R1 = open('CGATCGAT_read1', 'a') #this would be the read 1 (R1) file for the index 'CGATCGAT'
+and so on...
+
+
+
+index_file_dictionary = { #make a dictionary where the indexes are the keys, and the respective open file is the value
+	GTAGCGTA : (B1_R1, B1_R2)
+	CGATCGAT : (A2_R1, A2_R2) 
+	and so on...
+	}
+
+
+r1=open(read1_file)
+i1=open(index1_file)
+i2=open(index2_file)
+r2=open(read2_file)
+
+
+
+while True:
+	
+	#all of the readlines will be stripped of newline characters, I'm just too lazy to type it currently
+
+	n=0
+
+	#read the first line of a record in each file, make one of them a temp header
+	header = r1.readline() 
+	i1.readline()
+	i2.readline()
+	r2.readline()
+
+
+	#read the second line of a record in each file (the sequence)
+	read1 = r1.readline()
+	index1 = i1.readline()
+	index2 = i2.readline()
+	read2 = r2.readline()
+
+
+	#read the third line of a record in each file (the plus sign)
+	r1.readline()
+	i1.readline()
+	i2.readline()
+	r2.readline()
+
+
+	#read the fourth line of a record in each file (the quality scores)
+	read1_qual = r1.readline()
+	index1_qual = i1.readline()
+	index2_qual = i2.readline()
+	read2_qual = r2.readline()
+
+
+	if index1 == reverse_compliment(index2): #this will append the read 1 record to the appropriate index file if the indexes match
+		
+		#let's put the read1 record in the appropriate file
+		index_file_dictionary[index1][0].write(header+index1+index2) #append header to index_output_file_read1
+		index_file_dictionary[index1][0].write(read1) #append sequence to index_output_file_read1
+		index_file_dictionary[index1][0].write('+') #append plus sign
+		index_file_dictionary[index1][0].write(read1_qual) #append the quality score line to index_output_file_read1
+
+		#now let's take care of read 2...
+		index_file_dictionary[index1][1].write(header+index1+index2) #append header to index_output_file_read2
+		index_file_dictionary[index1][1].write(read2) #append sequence to index_output_file_read2
+		index_file_dictionary[index1][1].write('+') #append plus sign
+		index_file_dictionary[index1][1].write(read2_qual) #append quality score line to index_output_file_read2
+
+
+	if index1 != reverse_compliment(index2): #if the indexes don't match...
+
+		then do the same thing as the if loop directly above, but put the records in the index_swapped files
+
+
+	if index1 or index2 have an 'N' (or if one of the indexes have a quality score below a certain threshold, I haven't decided yet...):
+
+		then do the same thing as the if loop above, but put the records in the bad_quality files
+
+
+	if r2.readline() == '':
+		break
+
+	n+=1
+
+	if n % 21367455 ==0: #this prints out progress every 216367455 lines (1/17th), note that this number needs to be changed depending on input file if you want to keep it nice
+		print('working on record {}, we are {}/17th of the way there!'.format(n/4, n/4))
+
+
+then close all the files
+
+to check above, do a awk+grep test to see if all files contain the indexes they are supposed to have. 
