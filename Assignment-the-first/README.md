@@ -34,8 +34,18 @@ Please fill in your answers on [Answers.md](Answers.md)
 2.	Generate a per base distribution of quality scores for read1, read2, index1, and index2. Average the quality scores at each position for all reads and generate a per nucleotide mean distribution as you did in part 1 of PS4 (in Bi621).
     1.	Turn in the 4 histograms.
     2.	What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
+        - A good quality score cutoff, based on the histograms, is 35 for the index reads and 30 for the biological reads. 
     3.	How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
+        Index 1:
+        ``` gunzip -c 1294_S1_L008_R2_001.fastq.gz | grep -A1 --no-group-separator '^@K00337' | grep -v '^@K00337' | grep -c 'N' ```
 
+        Out: 3976613
+        
+        Index 2:
+        ``` gunzip -c 1294_S1_L008_R3_001.fastq.gz | grep -A1 --no-group-separator '^@K00337' | grep -v '^@K00337' | grep -c 'N'```
+        
+        Out:3328051
+        
 ## Part 2 – Develop an algorithm to de-multiplex the samples
 Write up a strategy (**NOT A SCRIPT**) for writing an algorithm to de-multiplex files and reporting index-hopping. That is, given four input FASTQ files (2 with biological reads, 2 with index reads) and the 24 known indexes above, demultiplex reads by index-pair, outputting one R1 FASTQ file and one R2 FASTQ file per matching index-pair, another two FASTQ files for non-matching index-pairs (index-hopping), and two additional FASTQ files when one or both index reads are unknown or low quality (do not match the 24 known indexes [this includes indexes with 'N's in them] or do not meet a quality score cutoff).  Add the sequence of the index-pair to the header of BOTH reads in all of your FASTQ files for all categories (e.g. add “AAAAAAAA-CCCCCCCC” to the end of headers of every read pair that had an index1 of AAAAAAAA and an index2 of CCCCCCCC; this pair of reads would be in the unknown category as one or both of these indexes do not match the 24 known indexes).
 
