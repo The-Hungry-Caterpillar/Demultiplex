@@ -12,10 +12,6 @@ def get_args(): #defines all the independent variables
 	parser.add_argument('-i2', '--index2', help='input index2 file')
 	parser.add_argument('-r2', '--read2', help='input read2 file')
 	
-	#parser.add_argument('-l', '--read_length', type=int, help='input read length')
-	#parser.add_argument('-nr', '--number_records', type=int, help="input number of records, use this command to count: ~$ records=$(grep -c '^@K00337' <filename>)'")
-	#parser.add_argument('-t', '--plot_title', help = 'input desired distribution plot title')
-	#parser.add_argument('-d', '--directory', help= 'input directory to save plots')
 	return parser.parse_args()
 
 args=get_args()
