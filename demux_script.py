@@ -20,30 +20,32 @@ def get_args(): #defines all the independent variables
 
 args=get_args()
 
+#for testing purposes:
+# python3 demux_script.py -bd buckets/ -r1 test_files/R1.fastq -i1 test_files/R2.fastq -i2 test_files/R3.fastq  -r2 test_files/R4.fastq
 
-nucleotide_string='ACGGT'
-print(bioinfo.reverse_compliment(nucleotide_string))
 
 def open_buckets():
-	buckets_dictionary={#Index read (i.e. AACTGACG): open(<bucket_out_file>, 'w')
+	'''Creates buckets based on indexes'''
+	buckets_dictionary={#Index1 read (i.e. AACTGACG): (handle(i.e. B1), open(<bucket_out_file_read1>, 'w')
 	}
-	#want to make another dictionary for matching reverse reads
-	rbuckets_dictionary={}
-	f = open('test_files/indexes', 'r')
+	rbuckets_dictionary={#Index2 read (rev comp of index1): (handle(i.e. B1), open(<bucket_out_file_read2>, 'w')
+	}
+	f = open('test_files/indexes', 'r') #opens the list of indexes
 	lines=(f.readlines())
 	for line in lines[1:]:
-		buckets_dictionary[(line.strip()).split('\t')[4]] =  open(args.bucket_directory+((line.strip()).split('\t')[4]) + '_read1', 'w')
-		rbuckets_dictionary[bioinfo.reverse_compliment((line.strip()).split('\t')[4])] =  open(args.bucket_directory+((line.strip()).split('\t')[4]) + '_read2', 'w')
-		#open(args.bucket_directory+((line.strip()).split('\t')[4]) + '_read1', 'w')
-		#open(args.bucket_directory+((line.strip()).split('\t')[4]) + '_read2','w')
+		'''populates the above dictionaries as described'''
+		buckets_dictionary[(line.strip()).split('\t')[4]] =  (((line.strip()).split('\t')[3]), open(args.bucket_directory+((line.strip()).split('\t')[4]) + '_read1', 'w'))
+		rbuckets_dictionary[bioinfo.reverse_compliment((line.strip()).split('\t')[4])] =  (((line.strip()).split('\t')[3]), open(args.bucket_directory+((line.strip()).split('\t')[4]) + '_read2', 'w'))
 	
 	f.close()
 
-	buckets_dictionary['BQ_read1']=open('bad_quality_read1','w')
-	buckets_dictionary['Index_swap_read1']=open('index_swap_read1','w')
+	#creates bad_quality buckets
+	buckets_dictionary['BQ_read1']=('bq1',open(args.bucket_directory+'bad_quality_read1','w'))
+	rbuckets_dictionary['BQ_read2']=('bq2',open(args.bucket_directory+'bad_quality_read2','w'))
 	
-	rbuckets_dictionary['BQ_read2']=open('bad_quality_read2','w')
-	rbuckets_dictionary['Index_swap_read2']=open('index_swap_read2','w')
+	#creates index_swapping buckets
+	buckets_dictionary['Index_swap_read1']=('is1', open(args.bucket_directory+'index_swap_read1','w'))
+	rbuckets_dictionary['Index_swap_read2']=('is2', open(args.bucket_directory+'index_swap_read2','w'))
 
 	return(buckets_dictionary, rbuckets_dictionary)
 
@@ -51,23 +53,31 @@ def open_buckets():
 buckets=open_buckets()[0] #creates the read1 buckets
 rbuckets=open_buckets()[1] #creates the read2 buckets
 
+
 #these open the files to be read
-r1=open('R1.fastq','r') #read 1
-i1=open('R2.fastq','r')	#index 1
-i2=open('R3.fastq','r') #index 2
-r2=open('R4.fastq','r') #read 2
+r1=open(args.read1,'r') #read 1
+i1=open(args.index1,'r') #index 1
+i2=open(args.index2,'r') #index 2
+r2=open(args.read2,'r') #read 2
 
 
 
 while True:
+	'''This loop reads fastq files and sorts them into buckets '''
 	
-	n=0
+	n=0 #this little guy is for keeping track of progress
+
+	if n % 21367455 ==0: #prints out progress every 216367455 lines (1/17th), note that this number needs to be changed depending on input file if you want to keep it nice
+		print('working on record {}, we are {}/17th of the way there!'.format(n/4, n/4))
+
+
+	####################### section 1 -- reading the records from each file ###########################
 
 	#read the first line of a record in each file, make one of them a temp header
-	header = r1.readline().strip().split('')[0] #also strip off the stuff at the end that's not common amongst all four headers
+	header = r1.readline().strip().split(' ')[0] #also strip off the stuff at the end that's not common amongst all four headers
 	i1.readline().strip()
 	i2.readline().strip()
-	r2.readline().strip()
+	r2.readline().strip().split(' ')
 
 
 	#read the second line of a record in each file (the sequence)
@@ -75,7 +85,6 @@ while True:
 	index1 = i1.readline().strip()
 	index2 = i2.readline().strip()
 	read2 = r2.readline().strip()
-
 
 	#read the third line of a record in each file (the plus sign)
 	r1.readline().strip()
@@ -90,49 +99,65 @@ while True:
 	index2_qual = i2.readline().strip()
 	read2_qual = r2.readline().strip()
 
+
+	if header == '':
+		break
+
+	############################# section 2 -- sort the records ##############################
+
 	if ('N' in index1) or ('N' in index2):
-		buckets[index1].write(header+index1+index2) #append header to index_output_file_read1
+		'''If the indexes contain Ns, then put read1 and read2 records in their respective bad quality buckets'''
 
-	if r2.readline() == '':
-		break
-""" 		#index_file_dictionary[index1][0].write(read1) #append sequence to index_output_file_read1
-		#index_file_dictionary[index1][0].write('+') #append plus sign
-		#index_file_dictionary[index1][0].write(read1_qual) #append the quality score line to index_output_file_read1
+		print(header,index1,index2, sep=' ', file=buckets['BQ_read1'][1]) #adds header (with both indexes, not rev comp) to bad qual read1 bucket
+		print(read1, file=buckets['BQ_read1'][1]) #adds read1 to bad qual read1 bucket
+		print('+', file=buckets['BQ_read1'][1]) #adds the little plus sign to bad qual read1 bucket
+		print(read1_qual, file=buckets['BQ_read1'][1]) #adds the quality score to the bad qual read1 bucket
 
-		#now let's take care of read 2...
-		index_file_dictionary[index1][1].write(header+index1+index2) #append header to index_output_file_read2
-		index_file_dictionary[index1][1].write(read2) #append sequence to index_output_file_read2
-		index_file_dictionary[index1][1].write('+') #append plus sign
-		index_file_dictionary[index1][1].write(read2_qual) #append quality score line to index_output_file_read2
+		print(header,index1,index2, sep=' ', file=rbuckets['BQ_read2'][1]) #adds header (with both indexes, not rev comp) to bad qual read2 bucket
+		print(read2, file=rbuckets['BQ_read2'][1]) # so on 
+		print('+', file=rbuckets['BQ_read2'][1]) #and so forth
+		print(read2_qual, file=rbuckets['BQ_read2'][1]) #...
 
 
-	if index1 == bioinfo.reverse_compliment(index2): #this will append the read 1 record to the appropriate index file if the indexes match
+
+	elif buckets[index1][0]==rbuckets[index2][0]: #recall that bucket keys are indexes and rbucket keys are rev comp indexes, but both have the same handle as value[0]
+		''' If the handles of the indexes match then put each record in its respective index/read bucket'''
 		
-		#let's put the read1 record in the appropriate file
-		index_file_dictionary[index1][0].write(header+index1+index2) #append header to index_output_file_read1
-		index_file_dictionary[index1][0].write(read1) #append sequence to index_output_file_read1
-		index_file_dictionary[index1][0].write('+') #append plus sign
-		index_file_dictionary[index1][0].write(read1_qual) #append the quality score line to index_output_file_read1
+		print(header,index1,index2, sep=' ', file=buckets[index1][1]) #adds header (with both indexes, not rev comp) to bad qual read1 bucket
+		print(read1, file=buckets[index1][1]) #adds read1 to bad qual read1 bucket
+		print('+', file=buckets[index1][1]) #adds the little plus sign to bad qual read1 bucket
+		print(read1_qual, file=buckets[index1][1]) #adds the quality score to the bad qual read1 bucket
 
-		#now let's take care of read 2...
-		index_file_dictionary[index1][1].write(header+index1+index2) #append header to index_output_file_read2
-		index_file_dictionary[index1][1].write(read2) #append sequence to index_output_file_read2
-		index_file_dictionary[index1][1].write('+') #append plus sign
-		index_file_dictionary[index1][1].write(read2_qual) #append quality score line to index_output_file_read2
-
-
-	if index1 != reverse_compliment(index2): #if the indexes don't match...
-
-		then do the same thing as the if loop directly above, but put the records in the index_swapped files
+		print(header,index1,index2, sep=' ', file=rbuckets[index2][1]) #adds header (with both indexes, not rev comp) to bad qual read2 bucket
+		print(read2, file=rbuckets[index2][1]) # so on 
+		print('+', file=rbuckets[index2][1]) #and so forth
+		print(read2_qual, file=rbuckets[index2][1]) #...
 
 
 
+	else:
+		''' If the indexes are swapped, then put the records in the respective swapped files'''
+	
+		print(header,index1,index2, sep=' ', file=buckets['Index_swap_read1'][1]) #adds header (with both indexes, not rev comp) to bad qual read1 bucket
+		print(read1, file=buckets['Index_swap_read1'][1]) #adds read1 to bad qual read1 bucket
+		print('+', file=buckets['Index_swap_read1'][1]) #adds the little plus sign to bad qual read1 bucket
+		print(read1_qual, file=buckets['Index_swap_read1'][1]) #adds the quality score to the bad qual read1 bucket
 
-	if r2.readline() == '':
-		break
+		print(header,index1,index2, sep=' ', file=rbuckets['Index_swap_read2'][1]) #adds header (with both indexes, not rev comp) to bad qual read2 bucket
+		print(read2, file=rbuckets['Index_swap_read2'][1]) # so on 
+		print('+', file=rbuckets['Index_swap_read2'][1]) #and so forth
+		print(read2_qual, file=rbuckets['Index_swap_read2'][1]) #...
+
 
 	n+=1
 
-	if n % 21367455 ==0: #this prints out progress every 216367455 lines (1/17th), note that this number needs to be changed depending on input file if you want to keep it nice
-		print('working on record {}, we are {}/17th of the way there!'.format(n/4, n/4))
- """
+r1.close()
+i1.close()
+i2.close()
+r2.close()
+
+for key in buckets:
+	buckets[key][1].close()
+
+for key in rbuckets:
+	rbuckets[key][1].close()
