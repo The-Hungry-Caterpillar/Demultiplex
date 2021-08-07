@@ -1,11 +1,12 @@
 import bioinfo
 import gzip
+import numpy as np
 
 def get_args(): #defines all the independent variables
 	import argparse
 	parser = argparse.ArgumentParser(description = "still need description")
 	#parser.add_argument('- command line variable', '-- python variable', description)
-	parser.add_argument('-f', '--input_file', help='filename for input')
+	parser.add_argument('-i', '--index_file', help='filename for input')
 	parser.add_argument('-bd', '--bucket_directory', help='input directory to which buckets will be added, INCLUDE THE / AT THE END, OTHERWISE THE CODE WILL NOT WORK')
 	parser.add_argument('-r1', '--read1', help='input read1 file')
 	parser.add_argument('-i1', '--index1', help='input index1 file')
@@ -26,7 +27,7 @@ def open_buckets():
 	}
 	rbuckets_dictionary={#Index2 read (rev comp of index1): (handle(i.e. B1), open(<bucket_out_file_read2>, 'w')
 	}
-	f = open('test_files/indexes', 'r') #opens the list of indexes
+	f = open(args.index_file, 'r') #opens the list of indexes
 	lines=(f.readlines())
 	for line in lines[1:]:
 		'''populates the above dictionaries as described'''
@@ -51,17 +52,17 @@ rbuckets=open_buckets()[1] #creates the read2 buckets
 
 
 #these open the files to be read
-r1=open(args.read1,'r') #read 1
-i1=open(args.index1,'r') #index 1
-i2=open(args.index2,'r') #index 2
-r2=open(args.read2,'r') #read 2
+r1=gzip.open(args.read1,'rt') #read 1
+i1=gzip.open(args.index1,'rt') #index 1
+i2=gzip.open(args.index2,'rt') #index 2
+r2=gzip.open(args.read2,'rt') #read 2
 
 
 
 while True:
 	'''This loop reads fastq files and sorts them into buckets '''
 	
-	n=0 #this little guy is for keeping track of progress
+	n=1 #this little guy is for keeping track of progress
 
 	if n % 21367455 ==0: #prints out progress every 216367455 lines (1/17th), note that this number needs to be changed depending on input file if you want to keep it nice
 		print('working on record {}, we are {}/17th of the way there!'.format(n/4, n/4))
@@ -101,8 +102,8 @@ while True:
 
 	############################# section 2 -- sort the records ##############################
 
-	if ('N' in index1) or ('N' in index2):
-		'''If the indexes contain Ns, then put read1 and read2 records in their respective bad quality buckets'''
+	if ((index1 not in buckets) or (np.mean([bioinfo.convert_phred(n) for n in index1_qual])<35)) or ((index2 not in rbuckets) or (np.mean([bioinfo.convert_phred(n) for n in index2_qual])<35)):
+		'''If the indexes contain Ns, or the average Qscore is less than 35, then put read1 and read2 records in their respective bad quality buckets'''
 
 		print(header,index1,index2, sep=' ', file=buckets['BQ_read1'][1]) #adds header (with both indexes, not rev comp) to bad qual read1 bucket
 		print(read1, file=buckets['BQ_read1'][1]) #adds read1 to bad qual read1 bucket
