@@ -16,6 +16,21 @@ if __name__ == '__bioinfo__':
 	assert validate_base_seq("Hi there!", True) == False, "Validate base seq fails to recognize nonDNA"
 
 
+def reverse_compliment(nucleotides):
+	reverse_compliment=''
+	for n in range(len(nucleotides)):
+		reverse_compliment+='A' if nucleotides[-1-n]=='T' else ''
+		reverse_compliment+='C' if nucleotides[-1-n]=='G' else ''
+		reverse_compliment+='T' if nucleotides[-1-n]=='A' else ''
+		reverse_compliment+='G' if nucleotides[-1-n]=='C' else ''
+		reverse_compliment+='N' if nucleotides[-1-n]=='N' else ''
+	return(reverse_compliment)
+
+if __name__=='bioinfo':
+	assert reverse_compliment('ACCGTG') == 'CACGGT', 'did not return reverse compliment'
+	assert reverse_compliment('ANNGT') == 'ACNNT', 'did not read N correctly'
+	
+
 
 
 def gc_content(DNA):
