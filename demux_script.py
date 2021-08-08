@@ -23,9 +23,9 @@ args=get_args()
 
 def open_buckets():
 	'''Creates buckets based on indexes'''
-	buckets_dictionary={#Index1 read (i.e. AACTGACG): (handle(i.e. B1), open(<bucket_out_file_read1>, 'w')
+	buckets_dictionary={#Index1 read (i.e. AACTGACG): (handle(i.e. B1), open(<bucket_out_file_read1>, 'w', count)
 	}
-	rbuckets_dictionary={#Index2 read (rev comp of index1): (handle(i.e. B1), open(<bucket_out_file_read2>, 'w')
+	rbuckets_dictionary={#Index2 read (rev comp of index1): (handle(i.e. B1), open(<bucket_out_file_read2>, 'w', count)
 	}
 	f = open(args.index_file, 'r') #opens the list of indexes
 	lines=(f.readlines())
@@ -116,7 +116,6 @@ while True:
 		print(read2_qual, file=rbuckets['BQ_read2'][1]) #...
 
 
-
 	elif buckets[index1][0]==rbuckets[index2][0]: #recall that bucket keys are indexes and rbucket keys are rev comp indexes, but both have the same handle as value[0]
 		''' If the handles of the indexes match then put each record in its respective index/read bucket'''
 		
@@ -129,7 +128,6 @@ while True:
 		print(read2, file=rbuckets[index2][1]) # so on 
 		print('+', file=rbuckets[index2][1]) #and so forth
 		print(read2_qual, file=rbuckets[index2][1]) #...
-
 
 
 	else:
@@ -158,3 +156,5 @@ for key in buckets:
 
 for key in rbuckets:
 	rbuckets[key][1].close()
+
+
