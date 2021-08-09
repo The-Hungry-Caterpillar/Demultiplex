@@ -12,6 +12,7 @@ def get_args(): #defines all the independent variables
 	parser.add_argument('-i1', '--index1', help='input index1 file')
 	parser.add_argument('-i2', '--index2', help='input index2 file')
 	parser.add_argument('-r2', '--read2', help='input read2 file')
+	parser.add_argument('-Q', '--qscore', type=int, help='input average qscore cutoff')
 	
 	return parser.parse_args()
 
@@ -23,9 +24,9 @@ args=get_args()
 
 def open_buckets():
 	'''Creates buckets based on indexes'''
-	buckets_dictionary={#Index1 read (i.e. AACTGACG): (handle(i.e. B1), open(<bucket_out_file_read1>, 'w', count)
+	buckets_dictionary={#Index1 read (i.e. AACTGACG): (handle(i.e. B1), open(<bucket_out_file_read1>, 'w')
 	}
-	rbuckets_dictionary={#Index2 read (rev comp of index1): (handle(i.e. B1), open(<bucket_out_file_read2>, 'w', count)
+	rbuckets_dictionary={#Index2 read (rev comp of index1): (handle(i.e. B1), open(<bucket_out_file_read2>, 'w')
 	}
 	f = open(args.index_file, 'r') #opens the list of indexes
 	lines=(f.readlines())
@@ -37,12 +38,12 @@ def open_buckets():
 	f.close()
 
 	#creates bad_quality buckets
-	buckets_dictionary['BQ_read1']=('bq1',open(args.bucket_directory+'bad_quality_read1','w'))
-	rbuckets_dictionary['BQ_read2']=('bq2',open(args.bucket_directory+'bad_quality_read2','w'))
+	buckets_dictionary['BQ_read1']=('bq1',open(args.bucket_directory+'bad-quality_read1','w'))
+	rbuckets_dictionary['BQ_read2']=('bq2',open(args.bucket_directory+'bad-quality_read2','w'))
 	
 	#creates index_swapping buckets
-	buckets_dictionary['Index_swap_read1']=('is1', open(args.bucket_directory+'index_swap_read1','w'))
-	rbuckets_dictionary['Index_swap_read2']=('is2', open(args.bucket_directory+'index_swap_read2','w'))
+	buckets_dictionary['Index_swap_read1']=('is1', open(args.bucket_directory+'index-swap_read1','w'))
+	rbuckets_dictionary['Index_swap_read2']=('is2', open(args.bucket_directory+'index-swap_read2','w'))
 
 	return(buckets_dictionary, rbuckets_dictionary)
 
@@ -61,12 +62,6 @@ r2=gzip.open(args.read2,'rt') #read 2
 
 while True:
 	'''This loop reads fastq files and sorts them into buckets '''
-	
-	n=1 #this little guy is for keeping track of progress
-
-	if n % 21367455 ==0: #prints out progress every 216367455 lines (1/17th), note that this number needs to be changed depending on input file if you want to keep it nice
-		print('working on record {}, we are {}/17th of the way there!'.format(n/4, n/4))
-
 
 	####################### section 1 -- reading the records from each file ###########################
 
@@ -102,7 +97,7 @@ while True:
 
 	############################# section 2 -- sort the records ##############################
 
-	if ((index1 not in buckets) or (np.mean([bioinfo.convert_phred(n) for n in index1_qual])<35)) or ((index2 not in rbuckets) or (np.mean([bioinfo.convert_phred(n) for n in index2_qual])<35)):
+	if ((index1 not in buckets) or (np.mean([bioinfo.convert_phred(n) for n in index1_qual])<args.qscore)) or ((index2 not in rbuckets) or (np.mean([bioinfo.convert_phred(n) for n in index2_qual])<args.qscore)):
 		'''If the indexes contain Ns, or the average Qscore is less than 35, then put read1 and read2 records in their respective bad quality buckets'''
 
 		print(header,index1,index2, sep=' ', file=buckets['BQ_read1'][1]) #adds header (with both indexes, not rev comp) to bad qual read1 bucket
@@ -143,8 +138,6 @@ while True:
 		print('+', file=rbuckets['Index_swap_read2'][1]) #and so forth
 		print(read2_qual, file=rbuckets['Index_swap_read2'][1]) #...
 
-
-	n+=1
 
 r1.close()
 i1.close()
