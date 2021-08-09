@@ -116,3 +116,19 @@ Uhhh, done? that was...fast, also why didn't my progress reports print?
 	Exit status: 0
 
 want to redo and put some bar plots at the end
+
+After plotting it's obvious that too many reads went into bad qual -- going to rerun script with avg q score cutoff at 32
+~$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15673959      bgmp demux.sh   jogata  R      52:48      1 n225
+
+
+Current workflow is 'demux.sh' --> 'stats.sh' --> 'stats1.py', if you want to do a new run, move all buckets to new directory and change name of file 'data', preferably with Qscore cutoff
+
+Okay workflow is condensed into demux.sh script.
+UGH i overwrote all my buckets from Qscore cutoff of 32, rerun? still have the stats though.
+
+running demux for qscore cutoff of 30:
+ ~$ squeue -u jogata
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          15676647      bgmp demux.sh   jogata  R       0:10      1 n225
