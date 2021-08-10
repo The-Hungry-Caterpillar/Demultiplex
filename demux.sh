@@ -22,10 +22,12 @@ python demux_script.py \
 -Q $q
 
 conda activate bgmp_py39
-dir=buckets
+dir=buckets_Qcutoff$q
+touch data_Q$q
 ls -1 $dir | grep 'read1' | while read file
 do
 wc -l $dir/$file >> data_Q$q
 done
+
 
 python stats.py -f data_Q$q -Q $q
