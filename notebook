@@ -132,3 +132,6 @@ running demux for qscore cutoff of 30:
  ~$ squeue -u jogata
              JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
           15676647      bgmp demux.sh   jogata  R       0:10      1 n225
+		
+Did a demux run with cutoff score of Q30, Q32, Q33, and Q35.
+Put all the data and distributions into a folder called 'reports'
