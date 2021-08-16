@@ -11,13 +11,17 @@
 | 1294_S1_L008_R4_001.fastq.gz |  |
 
 2. Per-base NT distribution
-    1. Use markdown to insert your 4 histograms here.
-    2. ```Your answer here```
-    3. ```Your answer here```
+	- Use markdown to insert your 4 histograms here.
+    1. ![read1_distribution]( mean_distribution_plots/read1_mean_Qscores.png  "Read 1 quality distribution scores")
+    2. ![read2_distribution]( mean_distribution_plots/read2_mean_Qscores.png  "Read 2 quality distribution scores")
+
+	3. ![index1_distribution]( mean_distribution_plots/index1_mean_Qscores.png  "Index 1 quality distribution scores")
     
-    2.	What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
+	4. ![index2_distribution]( mean_distribution_plots/index2_mean_Qscores.png  "Index 2 quality distribution scores")
+    
+	5.	What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
         - A good quality score cutoff, based on the histograms, is 35 for the index reads and 30 for the biological reads. 
-    3.	How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
+    6.	How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
         Index 1:
         
         ``` gunzip -c 1294_S1_L008_R2_001.fastq.gz | grep -A1 --no-group-separator '^@K00337' | grep -v '^@K00337' | grep -c 'N' ```
